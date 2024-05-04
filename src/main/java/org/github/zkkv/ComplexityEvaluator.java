@@ -9,13 +9,10 @@ import spoon.reflect.declaration.CtElement;
 import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.visitor.Filter;
-
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.nio.file.FileSystems;
 import java.util.*;
 
-public class ComplexityEvaluator {
+public class ComplexityEvaluator extends TreeChecker{
 
     private final Filter<CtElement> filter = elem ->
                elem instanceof CtIf
@@ -24,34 +21,23 @@ public class ComplexityEvaluator {
             || elem instanceof CtFor
             || elem instanceof CtWhile;
 
-    private final Launcher launcher;
-
-    public ComplexityEvaluator() {
-        launcher = new Launcher();
-    }
-
     /**
      * Returns the top {@code nWorst} methods that have the highest number of conditional statements
      * among all methods in the provided file along with their scores or all methods
      * if {@code nWorst} is larger than the number of methods.
      *
      * @param filePath path to a .java file.
+     * @param nWorst how many method names to preserve
      * @return list of pairs each containing a method name and its score.
+     * @throws FileNotFoundException if file path is incorrect.
      */
     public List<Pair<String, Integer>> analyzeConditionals(String filePath, int nWorst)
             throws FileNotFoundException {
-        if (filePath == null) {
-            throw new FileNotFoundException();
-        }
 
-        String absolute = FileSystems.getDefault().getPath(filePath).normalize().toAbsolutePath().toString();
-
-        if (!(new File(absolute).isFile())) {
-            throw new FileNotFoundException();
-        }
+        String absolute = this.convertPath(filePath);
+        CtModel model = this.getModel(absolute);
 
         List<Pair<String, Integer>> matches = new ArrayList<>();
-        CtModel model = this.getModel(absolute);
 
         for (CtType<?> type : model.getAllTypes()) {
             var methods = type.getMethods();
@@ -63,11 +49,5 @@ public class ComplexityEvaluator {
 
         matches.sort((a, b) -> -Integer.compare(a.getRight(), b.getRight()));
         return matches.subList(0, Math.min(matches.size(), nWorst));
-    }
-
-    private CtModel getModel(String filePath) {
-        launcher.addInputResource(filePath);
-        launcher.buildModel();
-        return launcher.getModel();
     }
 }
