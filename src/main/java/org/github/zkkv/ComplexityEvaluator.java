@@ -2,7 +2,6 @@ package org.github.zkkv;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
-import spoon.Launcher;
 import spoon.reflect.CtModel;
 import spoon.reflect.code.*;
 import spoon.reflect.declaration.CtElement;
@@ -27,7 +26,7 @@ public class ComplexityEvaluator extends TreeChecker{
      * if {@code nWorst} is larger than the number of methods.
      *
      * @param filePath path to a .java file.
-     * @param nWorst how many method names to preserve
+     * @param nWorst how many method names to preserve.
      * @return list of pairs each containing a method name and its score.
      * @throws FileNotFoundException if file path is incorrect.
      */
@@ -48,6 +47,6 @@ public class ComplexityEvaluator extends TreeChecker{
         }
 
         matches.sort((a, b) -> -Integer.compare(a.getRight(), b.getRight()));
-        return matches.subList(0, Math.min(matches.size(), nWorst));
+        return matches.subList(0, Math.min(matches.size(), Math.max(0, nWorst)));
     }
 }
