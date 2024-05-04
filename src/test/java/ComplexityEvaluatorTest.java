@@ -11,7 +11,7 @@ import java.util.List;
 public class ComplexityEvaluatorTest {
 
     public ComplexityEvaluator evaluator;
-    private final String relPath = "src/test/resources/";
+    private final String relPath = "src/test/resources/ComplexityEvaluatorTests/";
 
     @BeforeEach
     void setUp() {
