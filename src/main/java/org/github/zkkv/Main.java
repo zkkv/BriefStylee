@@ -1,7 +1,8 @@
 package org.github.zkkv;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import java.io.FileNotFoundException;
-import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,9 +14,10 @@ public class Main {
 
         ComplexityEvaluator evaluator = new ComplexityEvaluator();
         try {
-            Map<String, Integer> map = evaluator.analyzeConditionals(filePath);
-            for (String str : map.keySet()) {
-                System.out.println(str + " " + map.get(str));
+            var matches = evaluator.analyzeConditionals(filePath, 3);
+            System.out.println("METHOD - SCORE");
+            for (Pair<String, Integer> p : matches) {
+                System.out.println(p.getLeft() + " " + p.getRight());
             }
         } catch (FileNotFoundException e) {
             System.err.println("File not found: " + filePath);
