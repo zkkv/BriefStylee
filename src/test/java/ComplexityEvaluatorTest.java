@@ -19,12 +19,98 @@ public class ComplexityEvaluatorTest {
     }
 
     @Test
+    void testSingleIf() throws FileNotFoundException {
+        List<Pair<String, Integer>> expected = List.of(
+                new ImmutablePair<>("foo", 1)
+        );
+        List<Pair<String, Integer>> actual =
+                evaluator.analyzeConditionals(relPath + "TestSingleIf.java", 3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testSingleSwitch() throws FileNotFoundException {
+        List<Pair<String, Integer>> expected = List.of(
+                new ImmutablePair<>("foo", 1)
+        );
+        List<Pair<String, Integer>> actual =
+                evaluator.analyzeConditionals(relPath + "testSingleSwitch.java", 3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testSingleDoWhile() throws FileNotFoundException {
+        List<Pair<String, Integer>> expected = List.of(
+                new ImmutablePair<>("foo", 1)
+        );
+        List<Pair<String, Integer>> actual =
+                evaluator.analyzeConditionals(relPath + "testSingleDoWhile.java", 3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testSingleWhile() throws FileNotFoundException {
+        List<Pair<String, Integer>> expected = List.of(
+                new ImmutablePair<>("foo", 1)
+        );
+        List<Pair<String, Integer>> actual =
+                evaluator.analyzeConditionals(relPath + "testSingleWhile.java", 3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testSingleFor() throws FileNotFoundException {
+        List<Pair<String, Integer>> expected = List.of(
+                new ImmutablePair<>("foo", 1)
+        );
+        List<Pair<String, Integer>> actual =
+                evaluator.analyzeConditionals(relPath + "testSingleFor.java", 3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
     void testNested() throws FileNotFoundException {
         List<Pair<String, Integer>> expected = List.of(
                 new ImmutablePair<>("foo", 7)
         );
         List<Pair<String, Integer>> actual =
                 evaluator.analyzeConditionals(relPath + "TestNested.java", 3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testThreeMethods() throws FileNotFoundException {
+        List<Pair<String, Integer>> expected = List.of(
+                new ImmutablePair<>("bar", 3),
+                new ImmutablePair<>("foobar", 2),
+                new ImmutablePair<>("foo", 1)
+        );
+        List<Pair<String, Integer>> actual =
+                evaluator.analyzeConditionals(relPath + "testThreeMethods.java", 3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testFourMethodsWorstFirst() throws FileNotFoundException {
+        List<Pair<String, Integer>> expected = List.of(
+                new ImmutablePair<>("baz", 4),
+                new ImmutablePair<>("bar", 3),
+                new ImmutablePair<>("foobar", 2)
+        );
+        List<Pair<String, Integer>> actual =
+                evaluator.analyzeConditionals(relPath + "testFourMethodsWorstFirst.java", 3);
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testFourMethodsWorstLast() throws FileNotFoundException {
+        List<Pair<String, Integer>> expected = List.of(
+                new ImmutablePair<>("baz", 4),
+                new ImmutablePair<>("bar", 3),
+                new ImmutablePair<>("foobar", 2)
+        );
+        List<Pair<String, Integer>> actual =
+                evaluator.analyzeConditionals(relPath + "testFourMethodsWorstLast.java", 3);
         assertEquals(expected, actual);
     }
 }
